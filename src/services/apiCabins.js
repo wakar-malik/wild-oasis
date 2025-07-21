@@ -12,7 +12,6 @@ export async function getCabins() {
 }
 
 export async function createEditCabin(newCabin, id) {
-  console.log(newCabin);
   // image-url
   // https://gfqjtaxntksyooopezgm.supabase.co/storage/v1/object/public/cabin-images//cabin-001.jpg
 
@@ -32,13 +31,11 @@ export async function createEditCabin(newCabin, id) {
 
   // Create Cabin
   if (!id) {
-    console.log("inserting.........");
     query = query.insert([{ ...newCabin, image: imagePath }]).select();
   }
 
   // Edit Cabin
   if (id) {
-    console.log("editing.........");
     query = query
       .update({ ...newCabin, image: imagePath })
       .eq("id", id)

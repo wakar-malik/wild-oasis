@@ -10,7 +10,7 @@ import { UseEditCabin } from "./useEditCabin";
 
 function CreateCabinForm({ cabinToEdit = {} }) {
   const { id: editId, ...editValues } = cabinToEdit;
-  const isEditSession = Boolean(editId);
+  const isEditSession = !!editId;
   const { isCreating, createCabin } = UseCreateCabin();
   const { isEditing, editCabin } = UseEditCabin();
 

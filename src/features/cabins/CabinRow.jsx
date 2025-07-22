@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
 import { useState } from "react";
 import CreateCabinForm from "./CreateCabinForm";
-import { UseDeleteCabin } from "./useCabinDelete";
+import { useDeleteCabin } from "./useCabinDelete";
 import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
-import { UseCreateCabin } from "./useCreateCabin";
+import { useCreateCabin } from "./useCreateCabin";
 
 const TableRow = styled.div`
   display: grid;
@@ -47,8 +47,8 @@ const Discount = styled.div`
 
 function CabinRow({ cabin }) {
   const [showForm, setShowForm] = useState(false);
-  const { isDeletingCabin, deleteCabin } = UseDeleteCabin();
-  const { isCreating, createCabin } = UseCreateCabin();
+  const { isDeletingCabin, deleteCabin } = useDeleteCabin();
+  const { isCreating, createCabin } = useCreateCabin();
 
   const {
     id: cabinId,

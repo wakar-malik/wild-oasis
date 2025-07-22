@@ -5,14 +5,14 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
 import FormRow from "../../ui/FormRow";
-import { UseCreateCabin } from "./useCreateCabin";
-import { UseEditCabin } from "./useEditCabin";
+import { useCreateCabin } from "./useCreateCabin";
+import { useEditCabin } from "./useEditCabin";
 
 function CreateCabinForm({ cabinToEdit = {} }) {
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSession = !!editId;
-  const { isCreating, createCabin } = UseCreateCabin();
-  const { isEditing, editCabin } = UseEditCabin();
+  const { isCreating, createCabin } = useCreateCabin();
+  const { isUpdating, updateCabin } = useEditCabin();
 
   const {
     register,
@@ -22,13 +22,13 @@ function CreateCabinForm({ cabinToEdit = {} }) {
     getValues,
   } = useForm({ defaultValues: isEditSession ? editValues : {} });
 
-  const isWorking = isCreating || isEditing;
+  const isWorking = isCreating || isUpdating;
 
   function onSubmit(data) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
 
     if (isEditSession) {
-      editCabin(
+      updateCabin(
         { newCabinData: { ...data, image }, editId },
         { onSuccess: () => reset() }
       );

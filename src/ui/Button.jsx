@@ -57,11 +57,15 @@ const Button = styled.button`
   ${(props) => variations[props.variation]}
 
   ${(props) =>
-    !props.size &&
     !props.variation &&
     css`
-      ${sizes.medium}
       ${variations.primary}
+    `}
+
+    ${(props) =>
+    !props.size &&
+    css`
+      ${sizes.medium}
     `}
 `;
 

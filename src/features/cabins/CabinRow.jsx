@@ -5,6 +5,10 @@ import CreateCabinForm from "./CreateCabinForm";
 import { useDeleteCabin } from "./useCabinDelete";
 import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import { useCreateCabin } from "./useCreateCabin";
+import Modal from "../../ui/Modal";
+import Heading from "../../ui/Heading";
+import Button from "../../ui/Button";
+import Row from "../../ui/Row";
 
 const TableRow = styled.div`
   display: grid;
@@ -16,6 +20,11 @@ const TableRow = styled.div`
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
   }
+`;
+
+const ActionButton = styled.button`
+  padding: 1rem;
+  border: 2px solid var(--color-brand-600);
 `;
 
 const Img = styled.img`
@@ -49,6 +58,7 @@ function CabinRow({ cabin }) {
   const [showForm, setShowForm] = useState(false);
   const { isDeletingCabin, deleteCabin } = useDeleteCabin();
   const { isCreating, createCabin } = useCreateCabin();
+  const [confirmDeletion, setConfirmDeletion] = useState(false);
 
   const {
     id: cabinId,
@@ -85,18 +95,43 @@ function CabinRow({ cabin }) {
         )}
 
         <div>
-          <button disabled={isCreating} onClick={DuplicateCabin}>
-            <HiSquare2Stack />
-          </button>
-          <button onClick={() => setShowForm((prev) => !prev)}>
-            <HiPencil />
-          </button>
-          <button
-            onClick={() => deleteCabin(cabinId)}
-            disabled={isDeletingCabin}
-          >
-            <HiTrash />
-          </button>
+          <Row type="horizontal">
+            <ActionButton disabled={isCreating} onClick={DuplicateCabin}>
+              <HiSquare2Stack />
+            </ActionButton>
+            <ActionButton onClick={() => setShowForm((prev) => !prev)}>
+              <HiPencil />
+            </ActionButton>
+            <ActionButton onClick={() => setConfirmDeletion(true)}>
+              <HiTrash />
+            </ActionButton>
+          </Row>
+          {confirmDeletion && (
+            <Modal>
+              <Row>
+                <Heading as="h3">
+                  Do you really want to delete Cabin {name} permanently!
+                </Heading>
+                <Row type="horizontal">
+                  <Button
+                    variation="secondary"
+                    onClick={() => setConfirmDeletion(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    disabled={isDeletingCabin}
+                    onClick={() => {
+                      deleteCabin(cabinId);
+                      setConfirmDeletion(false);
+                    }}
+                  >
+                    Confirm Cancel
+                  </Button>
+                </Row>
+              </Row>
+            </Modal>
+          )}
         </div>
       </TableRow>
 

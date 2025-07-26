@@ -1,11 +1,17 @@
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 import CabinTable from "../features/cabins/CabinTable";
-import AddCabin from "../features/cabins/AddCabin";
 import Modal from "../ui/Modal";
 import { useState } from "react";
 import CreateCabinForm from "../features/cabins/CreateCabinForm";
 import Button from "../ui/Button";
+import Filter from "../ui/Filter";
+
+const filterOptions = [
+  { value: "all", label: "All" },
+  { value: "no-discount", label: "No Discount" },
+  { value: "with-discount", label: "With Discount" },
+];
 
 function Cabins() {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -14,7 +20,7 @@ function Cabins() {
     <>
       <Row type="horizontal">
         <Heading as="h1">All cabins</Heading>
-        <p>Filter/ Sort</p>
+        <Filter filterField="discount" options={filterOptions} />
       </Row>
 
       <Row>

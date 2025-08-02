@@ -8,7 +8,9 @@ import Table from "../../ui/Table";
 
 function CabinTable() {
   const [searchParam] = useSearchParams();
-  const { isLoading, cabins } = useCabins();
+  const { isLoading, cabins, error } = useCabins();
+
+  if (error) return <h1>No cabins found (internet issues)</h1>;
   if (isLoading) return <Spinner />;
 
   let filteredCabins;
@@ -23,6 +25,14 @@ function CabinTable() {
   if (filterValue === "with-discount") {
     filteredCabins = cabins.filter((cabin) => +cabin.discount > 0);
   }
+
+  const sortValue = searchParam.get("sortBy") || "startDate-asc";
+  const [field, direction] = sortValue.split("-");
+  const modifier = direction === "asc" ? 1 : -1;
+
+  const sortedCabins = filteredCabins.sort((a, b) => {
+    return (a[field] - b[field]) * modifier;
+  });
 
   if (filteredCabins.length === 0) {
     return (
@@ -44,7 +54,7 @@ function CabinTable() {
       </Table.Header>
 
       <Table.Body
-        data={filteredCabins}
+        data={sortedCabins}
         render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
       />
     </Table>

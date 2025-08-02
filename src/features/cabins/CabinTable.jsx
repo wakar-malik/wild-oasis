@@ -7,20 +7,20 @@ import Row from "../../ui/Row";
 import Table from "../../ui/Table";
 
 function CabinTable() {
-  const [searchParam, setSearchParam] = useSearchParams();
+  const [searchParam] = useSearchParams();
   const { isLoading, cabins } = useCabins();
   if (isLoading) return <Spinner />;
 
-  const filterTerm = searchParam.get("discount") || "all";
   let filteredCabins;
+  const filterValue = searchParam.get("discount") || "all";
 
-  if (filterTerm === "all") {
+  if (filterValue === "all") {
     filteredCabins = cabins;
   }
-  if (filterTerm === "no-discount") {
-    filteredCabins = cabins.filter((cabin) => cabin.discount == "");
+  if (filterValue === "no-discount") {
+    filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
   }
-  if (filterTerm === "with-discount") {
+  if (filterValue === "with-discount") {
     filteredCabins = cabins.filter((cabin) => +cabin.discount > 0);
   }
 

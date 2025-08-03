@@ -8,10 +8,10 @@ import Table from "../../ui/Table";
 
 function CabinTable() {
   const [searchParam] = useSearchParams();
-  const { isLoading, cabins, error } = useCabins();
+  const { isLoading, cabins } = useCabins();
 
-  if (error) return <h1>No cabins found (internet issues)</h1>;
   if (isLoading) return <Spinner />;
+  if (!cabins.length) return <Empty resourceName="cabins" />;
 
   let filteredCabins;
   const filterValue = searchParam.get("discount") || "all";

@@ -6,10 +6,11 @@ import Spinner from "../../ui/Spinner";
 import Pagination from "../../ui/Pagination";
 
 function BookingTable() {
-  const { isLoading, bookings } = useBookings();
+  const { isLoading, bookings, count } = useBookings();
+  console.log(count);
 
   if (isLoading) return <Spinner />;
-  if (!bookings.length) return <Empty resourceName="bookings" />;
+  if (!bookings?.length) return <Empty resourceName="bookings" />;
 
   return (
     <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">
@@ -28,7 +29,7 @@ function BookingTable() {
       />
 
       <Table.Footer>
-        <Pagination count={5} />
+        <Pagination count={count} />
       </Table.Footer>
     </Table>
   );

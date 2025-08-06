@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import BookingDataBox from "../../features/bookings/BookingDataBox";
+import BookingDataBox from "../bookings/BookingDataBox";
 
 import Row from "../../ui/Row";
 import Heading from "../../ui/Heading";
@@ -8,6 +8,10 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
+import { useBooking } from "../bookings/useBooking";
+import Spinner from "../../ui/Spinner";
+import { useEffect, useState } from "react";
+import Checkbox from "../../ui/Checkbox";
 
 const Box = styled.div`
   /* Box */
@@ -17,10 +21,14 @@ const Box = styled.div`
   padding: 2.4rem 4rem;
 `;
 
-function CheckinBooking() {
+function CheckInBooking() {
   const moveBack = useMoveBack();
+  const [confirmPaid, setConfirmPaid] = useState(false);
+  const { booking, isLoading } = useBooking();
 
-  const booking = {};
+  useEffect(() => {
+    setConfirmPaid(booking?.isPaid ?? false);
+  }, [booking]);
 
   const {
     id: bookingId,
@@ -29,9 +37,11 @@ function CheckinBooking() {
     numGuests,
     hasBreakfast,
     numNights,
-  } = booking;
+  } = booking || {};
 
   function handleCheckin() {}
+
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -42,8 +52,21 @@ function CheckinBooking() {
 
       <BookingDataBox booking={booking} />
 
+      <Box>
+        <Checkbox
+          checked={confirm}
+          onClick={() => setConfirmPaid((confirm) => !confirm)}
+          disabled={confirmPaid}
+          id="confirm"
+        >
+          I confirm that {guests?.fullName} has paid the total amount
+        </Checkbox>
+      </Box>
+
       <ButtonGroup>
-        <Button onClick={handleCheckin}>Check in booking #{bookingId}</Button>
+        <Button onClick={handleCheckin} disabled={!confirmPaid}>
+          Check in booking #{bookingId}
+        </Button>
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>
@@ -52,4 +75,4 @@ function CheckinBooking() {
   );
 }
 
-export default CheckinBooking;
+export default CheckInBooking;

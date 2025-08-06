@@ -6,6 +6,8 @@ import Table from "../../ui/Table";
 
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
+import { HiArrowDownCircle, HiArrowTopRightOnSquare } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -29,6 +31,18 @@ const Stacked = styled.div`
   }
 `;
 
+const Link = styled.div`
+  cursor: pointer;
+  padding: 0;
+  color: var(--color-brand-800);
+  white-space: nowrap;
+
+  & > svg {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+`;
+
 const Amount = styled.div`
   font-family: "Sono";
   font-weight: 500;
@@ -47,6 +61,8 @@ function BookingRow({ booking }) {
     guests: { fullName: guestName, email },
     cabins: { name: cabinName },
   } = booking;
+
+  const navigate = useNavigate();
 
   const statusToTagName = {
     unconfirmed: "blue",
@@ -79,6 +95,18 @@ function BookingRow({ booking }) {
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
+
+      <Stacked>
+        <Link onClick={() => navigate(`/booking/${bookingId}`)}>
+          <HiArrowTopRightOnSquare />
+        </Link>
+
+        {status === "unconfirmed" && (
+          <Link onClick={() => navigate(`/check-in/${bookingId}`)}>
+            <HiArrowDownCircle />
+          </Link>
+        )}
+      </Stacked>
     </Table.Row>
   );
 }
